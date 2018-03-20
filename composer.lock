@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "07ded806700481d466ba3e64636414c1",
+    "content-hash": "c8fea78100b8bd2248eb80772366b839",
     "packages": [
         {
             "name": "bunq/sdk_php",
-            "version": "0.12.4",
+            "version": "0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bunq/sdk_php.git",
-                "reference": "2bf1329a65c386b645597e13e1ee951cfff02ada"
+                "reference": "90046683d2be1203fe6ca4be6dfcdb7ead9e4c2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/2bf1329a65c386b645597e13e1ee951cfff02ada",
-                "reference": "2bf1329a65c386b645597e13e1ee951cfff02ada",
+                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/90046683d2be1203fe6ca4be6dfcdb7ead9e4c2e",
+                "reference": "90046683d2be1203fe6ca4be6dfcdb7ead9e4c2e",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                 "payment",
                 "sepa"
             ],
-            "time": "2017-12-21T16:33:00+00:00"
+            "time": "2018-03-20T21:01:14+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
