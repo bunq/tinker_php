@@ -1,0 +1,44 @@
+{
+    "name": "bunq/sdk_php_tinker",
+    "description": "bunq PHP SDK tinker",
+    "keywords": [
+        "open-banking",
+        "sepa",
+        "bunq",
+        "finance",
+        "api",
+        "payment"
+    ],
+    "homepage": "https://bunq.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bunq",
+            "email": "sdk@bunq.com",
+            "homepage": "https://www.bunq.com",
+            "role": "Owner"
+        }
+    ],
+    "require": {
+        "php": "^7.0.13",
+        "bunq/sdk_php": "^0.13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "bunq\\tinker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {}
+    },
+    "require-dev": {},
+    "bin": [],
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.13"
+        }
+    },
+    "scripts": {
+    }
+}
