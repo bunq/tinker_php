@@ -430,7 +430,10 @@ EOL;
         if (array_key_exists($descriptionKey, $allOption)) {
             return $allOption[$descriptionKey];
         } else {
-            echo self::ECHO_DESCRIPTION;
+            echo vsprintf(
+                self::ECHO_DESCRIPTION,
+                [self::INDENTATION_NORMAL, self::INDENTATION_NORMAL]
+            );
 
             return static::readFromLine();
         }
