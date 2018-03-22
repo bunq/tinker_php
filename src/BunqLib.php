@@ -258,7 +258,7 @@ class BunqLib
         string $amount,
         string $recipient,
         string $description,
-	string $name,
+        string $name,
         MonetaryAccountBank $monetaryAccount
     ): int {
         // Create a new payment and retrieve it's id.
