@@ -153,11 +153,6 @@ function composerInstall
     composer install
 }
 
-function composerBunqInstall
-{
-    composer require bunq/sdk_php
-}
-
 function startTinker
 {
     ./go-tinker
@@ -183,7 +178,6 @@ assertIsRanInEmptyDirectory
 assertAllPrerequisitePresent
 cloneTinkerPhp
 composerInstall
-composerBunqInstall
 startTinker
 
 exit 0
