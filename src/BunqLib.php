@@ -29,7 +29,6 @@ class BunqLib
      */
     const ERROR_USER_TYPE_UNEXPECTED = 'User of type "%s" is unexpected';
     const ERROR_COULD_NOT_DETERMINE_ALIAS_OF_TYPE_IBAN = 'Could not find alias with type IBAN for monetary account "%s';
-    const ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE = 'Could not determine recipient type of "%s".';
     /**
      * Config file name constants.
      */
@@ -62,7 +61,6 @@ class BunqLib
      * Regex constants.
      */
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
-    const REGEX_SIMPLE_IBAN_NL = '^NL\d{2}[A-Z]{4}\d{10}$';
 
     /**
      * @var UserCompany|UserPerson|UserLight
@@ -265,10 +263,8 @@ class BunqLib
             $pointerType = self::POINTER_TYPE_EMAIL;
         } elseif (preg_match(self::REGEX_E164_PHONE, $recipient)) {
             $pointerType = self::POINTER_TYPE_PHONE_NUMBER;
-        } elseif (preg_match(self::REGEX_SIMPLE_IBAN_NL, $recipient)) {
-            $pointerType = self::POINTER_TYPE_IBAN;
         } else {
-            throw new BunqException(vsprintf(self::ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE, [$recipient]));
+            $pointerType = self::POINTER_TYPE_IBAN;
         }
 
         return new Pointer($pointerType, $recipient);
