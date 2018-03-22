@@ -245,6 +245,30 @@ class BunqLib
         )->getValue();
     }
 
+    /**
+     * @param string $amount
+     * @param string $recipient
+     * @param string $description
+     * @param string $name
+     * @param MonetaryAccountBank $monetaryAccount
+     *
+     * @return int
+     */
+    public function makePaymentIBAN(
+        string $amount,
+        string $recipient,
+        string $description,
+        string $name,
+        MonetaryAccountBank $monetaryAccount
+    ): int {
+        // Create a new payment and retrieve it's id.
+        return Payment::create(
+            new Amount($amount, self::CURRENCY_TYPE_EUR),
+            new Pointer(self::POINTER_TYPE_IBAN, $recipient, $name),
+            $description,
+            $monetaryAccount->getId()
+        )->getValue();
+    }
 
     /**
      * @param MonetaryAccountBank $monetaryAccount
