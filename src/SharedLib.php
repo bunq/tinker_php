@@ -43,15 +43,6 @@ class SharedLib
     /**
      * Option constants.
      */
-    const OPTION_KEY_AMOUNT = 'amount';
-    const OPTION_KEY_ACCOUNT = 'account-id';
-    const OPTION_KEY_DESCRIPTION = 'description';
-    const OPTION_KEY_NAME = 'name';
-    const OPTION_KEY_CARD = 'card-id';
-    const OPTION_KEY_URL = 'url';
-    const OPTION_KEY_PRODUCTION = 'production';
-    const OPTION_KEY_RECIPIENT = 'recipient';
-    const OPTION_VALUE_REQUIRED = ':';
     const ALL_OPTION_KEY = [
         self::OPTION_KEY_AMOUNT . self::OPTION_VALUE_REQUIRED,
         self::OPTION_KEY_ACCOUNT . self::OPTION_VALUE_REQUIRED,
@@ -62,6 +53,16 @@ class SharedLib
         self::OPTION_KEY_PRODUCTION,
         self::OPTION_KEY_RECIPIENT . self::OPTION_VALUE_REQUIRED,
     ];
+    const OPTION_KEY_AMOUNT = 'amount';
+    const OPTION_KEY_ACCOUNT = 'account-id';
+    const OPTION_KEY_DESCRIPTION = 'description';
+    const OPTION_KEY_NAME = 'name';
+    const OPTION_KEY_RECIPIENT_NAME = 'recipient-name';
+    const OPTION_KEY_CARD = 'card-id';
+    const OPTION_KEY_URL = 'url';
+    const OPTION_KEY_PRODUCTION = 'production';
+    const OPTION_KEY_RECIPIENT = 'recipient';
+    const OPTION_VALUE_REQUIRED = ':';
 
     /**
      * Input/output contains.
@@ -91,6 +92,7 @@ class SharedLib
     const ECHO_AMOUNT_IN_EUR = PHP_EOL . '%sAmount (EUR):%s';
     const ECHO_DESCRIPTION = '%sDescription:%s';
     const ECHO_NEW_NAME = PHP_EOL . '%sNew Name:%s%s';
+    const ECHO_RECIPIENT_NAME = PHP_EOL . '%sRecipient Name:%s%s';
     const ECHO_CARD_ID = PHP_EOL . '%sCard (ID):%s%s';
     const ECHO_ACCOUNT_ID = '%sAccount (ID):%s';
     const ECHO_CALLBACK_URL = PHP_EOL . '%sCallback URL:    ';
@@ -473,7 +475,7 @@ EOL;
      *
      * @return string
      */
-    public static function getNameFromAllOptionOrStdIn(array $AllOption)
+    public static function getMonetaryAccountNewNameFromAllOptionOrStdIn(array $AllOption)
     {
         $nameKey = self::OPTION_KEY_NAME;
 
@@ -482,6 +484,27 @@ EOL;
         } else {
             echo vsprintf(
                 self::ECHO_NEW_NAME,
+                [self::INDENTATION_NORMAL, self::INDENTATION_NORMAL, self::INDENTATION_NORMAL]
+            );
+
+            return static::readFromLine();
+        }
+    }
+
+    /**
+     * @param string[] $AllOption
+     *
+     * @return string
+     */
+    public static function getRecipientNameFromAllOptionOrStdIn(array $AllOption)
+    {
+        $nameKey = self::OPTION_KEY_RECIPIENT_NAME;
+
+        if (array_key_exists($nameKey, $AllOption)) {
+            return $AllOption[$nameKey];
+        } else {
+            echo vsprintf(
+                self::ECHO_RECIPIENT_NAME,
                 [self::INDENTATION_NORMAL, self::INDENTATION_NORMAL, self::INDENTATION_NORMAL]
             );
 

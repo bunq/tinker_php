@@ -14,7 +14,7 @@ SharedLib::printHeader();
 $bunq = new BunqLib($environment);
 
 $account = SharedLib::getAccountIdFromAllOptionOrStdIn($allOption, $bunq->getAllActiveBankAccount());
-$name = SharedLib::getNameFromAllOptionOrStdIn($allOption);
+$name = SharedLib::getMonetaryAccountNewNameFromAllOptionOrStdIn($allOption);
 
 echo <<<EOL
 
