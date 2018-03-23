@@ -29,6 +29,8 @@ class BunqLib
      */
     const ERROR_USER_TYPE_UNEXPECTED = 'User of type "%s" is unexpected';
     const ERROR_COULD_NOT_DETERMINE_ALIAS_OF_TYPE_IBAN = 'Could not find alias with type IBAN for monetary account "%s';
+    const ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE = 'Could not determine recipient type of "%s".';
+
     /**
      * Config file name constants.
      */
@@ -230,44 +232,50 @@ class BunqLib
 
     /**
      * @param string $amount
-     * @param string $recipient
+     * @param string $recipientValueString
      * @param string $description
      * @param MonetaryAccountBank $monetaryAccount
+     * @param string|null $recipientNameString
      *
      * @return int
+     * @throws BunqException
      */
     public function makePayment(
         string $amount,
-        string $recipient,
+        string $recipientValueString,
         string $description,
-        MonetaryAccountBank $monetaryAccount
+        MonetaryAccountBank $monetaryAccount,
+        string $recipientNameString = null
     ): int {
         // Create a new payment and retrieve it's id.
         return Payment::create(
             new Amount($amount, self::CURRENCY_TYPE_EUR),
-            $this->determinePointerFromRecipient($recipient),
+            $this->determinePointerFromRecipient($recipientValueString, $recipientNameString),
             $description,
             $monetaryAccount->getId()
         )->getValue();
     }
 
     /**
-     * @param string $recipient
+     * @param string $recipientValueString
+     * @param string|null $recipientName
      *
      * @return Pointer
      * @throws BunqException
      */
-    public function determinePointerFromRecipient(string $recipient): Pointer
+    public function determinePointerFromRecipient(string $recipientValueString, string $recipientName = null): Pointer
     {
-        if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-            $pointerType = self::POINTER_TYPE_EMAIL;
-        } elseif (preg_match(self::REGEX_E164_PHONE, $recipient)) {
-            $pointerType = self::POINTER_TYPE_PHONE_NUMBER;
+        if (filter_var($recipientValueString, FILTER_VALIDATE_EMAIL)) {
+            $pointer = new Pointer(self::POINTER_TYPE_EMAIL, $recipientValueString);
+        } elseif (preg_match(self::REGEX_E164_PHONE, $recipientValueString) === 1) {
+            $pointer = new Pointer(self::POINTER_TYPE_PHONE_NUMBER, $recipientValueString);
+        } elseif (!is_null($recipientName)) {
+            $pointer = new Pointer(self::POINTER_TYPE_IBAN, $recipientValueString, $recipientName);
         } else {
-            $pointerType = self::POINTER_TYPE_IBAN;
+            throw new BunqException(vsprintf(self::ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE, [$recipientValueString]));
         }
 
-        return new Pointer($pointerType, $recipient);
+        return $pointer;
     }
 
     /**
@@ -289,22 +297,25 @@ class BunqLib
 
     /**
      * @param string $amount
-     * @param string $recipient
+     * @param string $recipientValueString
      * @param string $description
      * @param MonetaryAccountBank $monetaryAccount
+     * @param string|null $recipientNameString
      *
      * @return int
+     * @throws BunqException
      */
     public function makeRequest(
         string $amount,
-        string $recipient,
+        string $recipientValueString,
         string $description,
-        MonetaryAccountBank $monetaryAccount
+        MonetaryAccountBank $monetaryAccount,
+        string $recipientNameString = null
     ): int {
         // Create a new request and retrieve it's id.
         return RequestInquiry::create(
             new Amount($amount, self::CURRENCY_TYPE_EUR),
-            $this->determinePointerFromRecipient($recipient),
+            $this->determinePointerFromRecipient($recipientValueString, $recipientNameString),
             $description,
             true,
             $monetaryAccount->getId()
