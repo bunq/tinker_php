@@ -185,14 +185,6 @@ class BunqLib
     }
 
     /**
-     * @return UserCompany|UserLight|UserPerson
-     */
-    public function getCurrentUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * @param int $count
      *
      * @return MonetaryAccountBank[]
@@ -355,8 +347,6 @@ class BunqLib
         )->getValue();
     }
 
-    // HELPERS
-
     /**
      * @param Card $card
      * @param MonetaryAccountBank $monetaryAccount
@@ -374,6 +364,8 @@ class BunqLib
             $monetaryAccount->getId()
         );
     }
+
+    // HELPERS
 
     /**
      * @param string $callbackUrl
@@ -434,5 +426,13 @@ class BunqLib
     public function getAllUserAlias(): array
     {
         return $this->getCurrentUser()->getAlias();
+    }
+
+    /**
+     * @return UserCompany|UserLight|UserPerson
+     */
+    public function getCurrentUser()
+    {
+        return $this->user;
     }
 }
