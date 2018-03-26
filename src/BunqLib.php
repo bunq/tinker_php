@@ -31,7 +31,6 @@ class BunqLib
     const ERROR_USER_TYPE_UNEXPECTED = 'User of type "%s" is unexpected';
     const ERROR_COULD_NOT_DETERMINE_ALIAS_OF_TYPE_IBAN = 'Could not find alias with type IBAN for monetary account "%s';
     const ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE = 'Could not determine recipient type of "%s".';
-    const ERROR_INSUFFICIENT_AUTHENTICATION = 'Insufficient authentication';
 
     /**
      * Config file name constants.
@@ -64,6 +63,7 @@ class BunqLib
     /**
      * Regex constants.
      */
+    const REGEX_ERROR_INSUFFICIENT_AUTHENTICATION = '/Insufficient authentication/';
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
 
     /**
@@ -104,14 +104,7 @@ class BunqLib
             $apiContext->save($this->determineBunqConfFileName());
             BunqContext::loadApiContext($apiContext);
         } catch (ForbiddenException $forbiddenException) {
-            if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
-                && strpos($forbiddenException->getMessage(), self::ERROR_INSUFFICIENT_AUTHENTICATION) !== false
-            ) {
-                unlink($this->determineBunqConfFileName());
-                $this->setupContext();
-            } else {
-                throw $forbiddenException;
-            }
+            $this->handleForbiddenException($forbiddenException);
         }
     }
 
@@ -140,6 +133,23 @@ class BunqLib
             $this->user = BunqContext::getUserContext()->getUserPerson();
         } else {
             throw new BunqException(vsprintf(self::ERROR_USER_TYPE_UNEXPECTED, [get_class($this->user)]));
+        }
+    }
+
+    /**
+     * @param ForbiddenException $forbiddenException
+     *
+     * @throws ForbiddenException
+     */
+    private function handleForbiddenException(ForbiddenException $forbiddenException)
+    {
+        if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+            && preg_match(self::REGEX_ERROR_INSUFFICIENT_AUTHENTICATION, $forbiddenException->getMessage())
+        ) {
+            unlink($this->determineBunqConfFileName());
+            $this->setupContext();
+        } else {
+            throw $forbiddenException;
         }
     }
 
