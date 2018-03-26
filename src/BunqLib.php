@@ -4,6 +4,7 @@ namespace bunq\tinker;
 use bunq\Context\ApiContext;
 use bunq\Context\BunqContext;
 use bunq\Exception\BunqException;
+use bunq\Exception\ForbiddenException;
 use bunq\Http\Pagination;
 use bunq\Model\Generated\Endpoint\Card;
 use bunq\Model\Generated\Endpoint\MonetaryAccountBank;
@@ -30,6 +31,7 @@ class BunqLib
     const ERROR_USER_TYPE_UNEXPECTED = 'User of type "%s" is unexpected';
     const ERROR_COULD_NOT_DETERMINE_ALIAS_OF_TYPE_IBAN = 'Could not find alias with type IBAN for monetary account "%s';
     const ERROR_COULD_NOT_DETERMINE_RECIPIENT_TYPE = 'Could not determine recipient type of "%s".';
+    const ERROR_INSUFFICIENT_AUTHENTICATION = 'Insufficient authentication';
 
     /**
      * Config file name constants.
@@ -96,11 +98,21 @@ class BunqLib
             InstallationUtil::automaticInstall($this->environment, $this->determineBunqConfFileName());
         }
 
-        $apiContext = ApiContext::restore($this->determineBunqConfFileName());
-        $apiContext->ensureSessionActive();
-        $apiContext->save($this->determineBunqConfFileName());
-
-        BunqContext::loadApiContext($apiContext);
+        try {
+            $apiContext = ApiContext::restore($this->determineBunqConfFileName());
+            $apiContext->ensureSessionActive();
+            $apiContext->save($this->determineBunqConfFileName());
+            BunqContext::loadApiContext($apiContext);
+        } catch (ForbiddenException $forbiddenException) {
+            if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+                && strpos($forbiddenException->getMessage(), self::ERROR_INSUFFICIENT_AUTHENTICATION) !== false
+            ) {
+                unlink($this->determineBunqConfFileName());
+                $this->setupContext();
+            } else {
+                throw $forbiddenException;
+            }
+        }
     }
 
     /**
