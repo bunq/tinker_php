@@ -63,6 +63,7 @@ class BunqLib
     /**
      * Regex constants.
      */
+    const PREG_MATCH_SUCCESS = 1;
     const REGEX_ERROR_INSUFFICIENT_AUTHENTICATION = '/Insufficient authentication/';
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
 
@@ -143,14 +144,24 @@ class BunqLib
      */
     private function handleForbiddenException(ForbiddenException $forbiddenException)
     {
-        if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
-            && preg_match(self::REGEX_ERROR_INSUFFICIENT_AUTHENTICATION, $forbiddenException->getMessage())
-        ) {
+        if ($this->isSandboxUserReset($forbiddenException->getMessage())) {
             unlink($this->determineBunqConfFileName());
             $this->setupContext();
         } else {
             throw $forbiddenException;
         }
+    }
+
+    /**
+     * @param string $forbiddenExceptionMessage
+     *
+     * @return bool
+     */
+    private function isSandboxUserReset(string $forbiddenExceptionMessage): bool
+    {
+        return BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+            && (preg_match(self::REGEX_ERROR_INSUFFICIENT_AUTHENTICATION, $forbiddenExceptionMessage)
+                === self::PREG_MATCH_SUCCESS);
     }
 
     /**
