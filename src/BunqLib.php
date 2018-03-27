@@ -4,6 +4,7 @@ namespace bunq\tinker;
 use bunq\Context\ApiContext;
 use bunq\Context\BunqContext;
 use bunq\Exception\BunqException;
+use bunq\Exception\ForbiddenException;
 use bunq\Http\Pagination;
 use bunq\Model\Generated\Endpoint\Card;
 use bunq\Model\Generated\Endpoint\MonetaryAccountBank;
@@ -62,6 +63,8 @@ class BunqLib
     /**
      * Regex constants.
      */
+    const PREG_MATCH_SUCCESS = 1;
+    const REGEX_ERROR_INSUFFICIENT_AUTHENTICATION = '/Insufficient authentication/';
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
 
     /**
@@ -96,11 +99,14 @@ class BunqLib
             InstallationUtil::automaticInstall($this->environment, $this->determineBunqConfFileName());
         }
 
-        $apiContext = ApiContext::restore($this->determineBunqConfFileName());
-        $apiContext->ensureSessionActive();
-        $apiContext->save($this->determineBunqConfFileName());
-
-        BunqContext::loadApiContext($apiContext);
+        try {
+            $apiContext = ApiContext::restore($this->determineBunqConfFileName());
+            $apiContext->ensureSessionActive();
+            $apiContext->save($this->determineBunqConfFileName());
+            BunqContext::loadApiContext($apiContext);
+        } catch (ForbiddenException $forbiddenException) {
+            $this->handleForbiddenException($forbiddenException);
+        }
     }
 
     /**
@@ -129,6 +135,33 @@ class BunqLib
         } else {
             throw new BunqException(vsprintf(self::ERROR_USER_TYPE_UNEXPECTED, [get_class($this->user)]));
         }
+    }
+
+    /**
+     * @param ForbiddenException $forbiddenException
+     *
+     * @throws ForbiddenException
+     */
+    private function handleForbiddenException(ForbiddenException $forbiddenException)
+    {
+        if ($this->isSandboxUserReset($forbiddenException->getMessage())) {
+            unlink($this->determineBunqConfFileName());
+            $this->setupContext();
+        } else {
+            throw $forbiddenException;
+        }
+    }
+
+    /**
+     * @param string $forbiddenExceptionMessage
+     *
+     * @return bool
+     */
+    private function isSandboxUserReset(string $forbiddenExceptionMessage): bool
+    {
+        return BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+            && (preg_match(self::REGEX_ERROR_INSUFFICIENT_AUTHENTICATION, $forbiddenExceptionMessage)
+                === self::PREG_MATCH_SUCCESS);
     }
 
     /**
