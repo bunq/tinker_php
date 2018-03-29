@@ -279,7 +279,7 @@ class BunqLib
     {
         if (filter_var($recipientValueString, FILTER_VALIDATE_EMAIL)) {
             $pointer = new Pointer(self::POINTER_TYPE_EMAIL, $recipientValueString);
-        } elseif (preg_match(self::REGEX_E164_PHONE, $recipientValueString) === 1) {
+        } elseif (preg_match(self::REGEX_E164_PHONE, $recipientValueString) === self::PREG_MATCH_SUCCESS) {
             $pointer = new Pointer(self::POINTER_TYPE_PHONE_NUMBER, $recipientValueString);
         } elseif (!is_null($recipientName)) {
             $pointer = new Pointer(self::POINTER_TYPE_IBAN, $recipientValueString, $recipientName);
