@@ -64,7 +64,6 @@ class BunqLib
      * Regex constants.
      */
     const PREG_MATCH_SUCCESS = 1;
-    const REGEX_ERROR_INSUFFICIENT_AUTHENTICATION = '/Insufficient authentication/';
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
 
     /**
@@ -90,8 +89,13 @@ class BunqLib
 
     /**
      * Restores the context from the saved file during creation.
+     *
+     * @param bool $resetConfigIfNeeded
+     *
+     * @throws BunqException
+     * @throws ForbiddenException
      */
-    private function setupContext()
+    private function setupContext(bool $resetConfigIfNeeded = true)
     {
         if (is_file($this->determineBunqConfFileName())) {
             // Config is already present
@@ -105,7 +109,11 @@ class BunqLib
             $apiContext->save($this->determineBunqConfFileName());
             BunqContext::loadApiContext($apiContext);
         } catch (ForbiddenException $forbiddenException) {
-            $this->handleForbiddenException($forbiddenException);
+            if ($resetConfigIfNeeded) {
+                $this->handleForbiddenException($forbiddenException);
+            } else {
+                throw $forbiddenException;
+            }
         }
     }
 
@@ -144,24 +152,12 @@ class BunqLib
      */
     private function handleForbiddenException(ForbiddenException $forbiddenException)
     {
-        if ($this->isSandboxUserReset($forbiddenException->getMessage())) {
+        if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)) {
             unlink($this->determineBunqConfFileName());
-            $this->setupContext();
+            $this->setupContext(false);
         } else {
             throw $forbiddenException;
         }
-    }
-
-    /**
-     * @param string $forbiddenExceptionMessage
-     *
-     * @return bool
-     */
-    private function isSandboxUserReset(string $forbiddenExceptionMessage): bool
-    {
-        return BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
-            && (preg_match(self::REGEX_ERROR_INSUFFICIENT_AUTHENTICATION, $forbiddenExceptionMessage)
-                === self::PREG_MATCH_SUCCESS);
     }
 
     /**
@@ -292,7 +288,7 @@ class BunqLib
     {
         if (filter_var($recipientValueString, FILTER_VALIDATE_EMAIL)) {
             $pointer = new Pointer(self::POINTER_TYPE_EMAIL, $recipientValueString);
-        } elseif (preg_match(self::REGEX_E164_PHONE, $recipientValueString) === 1) {
+        } elseif (preg_match(self::REGEX_E164_PHONE, $recipientValueString) === self::PREG_MATCH_SUCCESS) {
             $pointer = new Pointer(self::POINTER_TYPE_PHONE_NUMBER, $recipientValueString);
         } elseif (!is_null($recipientName)) {
             $pointer = new Pointer(self::POINTER_TYPE_IBAN, $recipientValueString, $recipientName);
