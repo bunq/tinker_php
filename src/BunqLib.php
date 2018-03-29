@@ -89,8 +89,13 @@ class BunqLib
 
     /**
      * Restores the context from the saved file during creation.
+     *
+     * @param bool $resetConfigIfNeeded
+     *
+     * @throws BunqException
+     * @throws ForbiddenException
      */
-    private function setupContext()
+    private function setupContext(bool $resetConfigIfNeeded = true)
     {
         if (is_file($this->determineBunqConfFileName())) {
             // Config is already present
@@ -104,7 +109,11 @@ class BunqLib
             $apiContext->save($this->determineBunqConfFileName());
             BunqContext::loadApiContext($apiContext);
         } catch (ForbiddenException $forbiddenException) {
-            $this->handleForbiddenException($forbiddenException);
+            if ($resetConfigIfNeeded) {
+                $this->handleForbiddenException($forbiddenException);
+            } else {
+                throw $forbiddenException;
+            }
         }
     }
 
@@ -145,7 +154,7 @@ class BunqLib
     {
         if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)) {
             unlink($this->determineBunqConfFileName());
-            $this->setupContext();
+            $this->setupContext(false);
         } else {
             throw $forbiddenException;
         }
