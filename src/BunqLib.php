@@ -19,7 +19,6 @@ use bunq\Model\Generated\Object\NotificationFilter;
 use bunq\Model\Generated\Object\Pointer;
 use bunq\Util\BunqEnumApiEnvironmentType;
 use bunq\Util\InstallationUtil;
-use Habitat\Environment\Environment;
 
 /**
  * Some simple helper methods to get you started in seconds.
@@ -73,6 +72,7 @@ class BunqLib
     const REQUEST_SPENDING_MONEY_DESCRIPTION = "Requesting some spending money.";
     const REQUEST_SPENDING_MONEY_RECIPIENT = "sugardaddy@bunq.com";
     const REQUEST_SPENDING_MONEY_AMOUNT = "500.0";
+    const REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS = 1;
 
     /**
      * Zero balance constant.
@@ -483,16 +483,25 @@ class BunqLib
      */
     private function requestSpendingMoneyIfNeeded()
     {
-        if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
-            && (floatval(BunqContext::getUserContext()->getPrimaryMonetaryAccount()->getBalance()->getValue())
-                <= self::BALANCE_ZERO)
-        ) {
+        if ($this->shouldRequestSpendingMoney()) {
             RequestInquiry::create(
                 new Amount(self::REQUEST_SPENDING_MONEY_AMOUNT, self::CURRENCY_TYPE_EUR),
                 new Pointer(self::POINTER_TYPE_EMAIL, self::REQUEST_SPENDING_MONEY_RECIPIENT),
                 self::REQUEST_SPENDING_MONEY_DESCRIPTION,
                 false
             );
+            sleep(self::REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS);
+            BunqContext::getUserContext()->refreshUserContext();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldRequestSpendingMoney(): bool
+    {
+        return BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+            && (floatval(BunqContext::getUserContext()->getPrimaryMonetaryAccount()->getBalance()->getValue())
+                <= self::BALANCE_ZERO);
     }
 }
