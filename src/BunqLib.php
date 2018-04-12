@@ -67,10 +67,22 @@ class BunqLib
     const REGEX_E164_PHONE = '/^\+\d{3,15}$/';
 
     /**
+     * Spending money request constants.
+     */
+    const REQUEST_SPENDING_MONEY_DESCRIPTION = "Requesting some spending money.";
+    const REQUEST_SPENDING_MONEY_RECIPIENT = "sugardaddy@bunq.com";
+    const REQUEST_SPENDING_MONEY_AMOUNT = "500.0";
+    const REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS = 1;
+
+    /**
+     * Zero balance constant.
+     */
+    const BALANCE_ZERO = 0.0;
+
+    /**
      * @var UserCompany|UserPerson|UserLight
      */
     protected $user;
-
 
     /**
      * @var BunqEnumApiEnvironmentType
@@ -85,6 +97,7 @@ class BunqLib
         $this->environment = $bunqEnumApiEnvironmentType;
         $this->setupContext();
         $this->setupCurrentUser();
+        $this->requestSpendingMoneyIfNeeded();
     }
 
     /**
@@ -463,5 +476,31 @@ class BunqLib
     public function getCurrentUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Requests money if the balance of the primary MA is equal to or less than zero.
+     */
+    private function requestSpendingMoneyIfNeeded()
+    {
+        if ($this->shouldRequestSpendingMoney()) {
+            RequestInquiry::create(
+                new Amount(self::REQUEST_SPENDING_MONEY_AMOUNT, self::CURRENCY_TYPE_EUR),
+                new Pointer(self::POINTER_TYPE_EMAIL, self::REQUEST_SPENDING_MONEY_RECIPIENT),
+                self::REQUEST_SPENDING_MONEY_DESCRIPTION,
+                false
+            );
+            sleep(self::REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldRequestSpendingMoney(): bool
+    {
+        return BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)
+            && (floatval(BunqContext::getUserContext()->getPrimaryMonetaryAccount()->getBalance()->getValue())
+                <= self::BALANCE_ZERO);
     }
 }
