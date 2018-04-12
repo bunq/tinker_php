@@ -491,7 +491,6 @@ class BunqLib
                 false
             );
             sleep(self::REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS);
-            BunqContext::getUserContext()->refreshUserContext();
         }
     }
 
