@@ -57,7 +57,23 @@ function assertAllPrerequisitePresent
     else
         echo -n "$(determineInstructionInstallationAllPrerequisiteMissing "${allPrerequisiteMissing}")"
 
-        exit 1
+        if [${1} ]; then
+            exit 1
+        else
+            assertAllPrerequisitePresent true
+        fi
+    fi
+}
+
+function assertComposerPrerequisitePresent
+{
+    phpModules=$(php -m | head)
+
+    if [[ ${phpModules} != *"curl"* ]]; then
+        determineInstructionInstallation "php-curl" "$(determineSystemName)" "php-curl"
+    fi
+    if [[ ${phpModules} != *"mbstring"* ]]; then
+        determineInstructionInstallation "php-mbstring" "$(determineSystemName)" "php-mbstring"
     fi
 }
 
@@ -129,7 +145,17 @@ function determineInstructionInstallation
     systemName="${2}"
     programPackageName=${3:-${programName}}
     commandInstallationConstantName="${COMMAND_INSTALLATION_PREFIX}$(capitalize ${systemName})"
-    printf "${ERROR_COULD_NOT_FIND_COMMAND}" "${programName}" "${!commandInstallationConstantName} ${programPackageName}"
+
+    warningMessage=$(printf "${ERROR_COULD_NOT_FIND_COMMAND}" "${programName}" "${!commandInstallationConstantName} ${programPackageName}")
+
+    echo ${warningMessage} >$(tty)
+    echo "Do you want to try and install this now? (y/N)? " >$(tty)
+
+    read answer
+    if [ "$answer" != "${answer#[Yy]}" ] ;then
+        echo "${!commandInstallationConstantName} ${programPackageName} -y" >$(tty)
+        eval "${!commandInstallationConstantName} ${programPackageName} -y" >$(tty)
+    fi
 }
 
 function determineSystemName
@@ -176,6 +202,7 @@ function capitalizeFirstLetter
 assertIsSystemSupported
 assertIsRanInEmptyDirectory
 assertAllPrerequisitePresent
+assertComposerPrerequisitePresent
 cloneTinkerPhp
 composerInstall
 startTinker
