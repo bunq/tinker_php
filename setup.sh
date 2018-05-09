@@ -5,6 +5,8 @@ ERROR_SYSTEM_UNKNOWN='Unknown system found "%s".\n'
 ERROR_RUN_IN_EMPTY_DIRECTORY='Please run the script from an empty directory\n'
 ERROR_COULD_NOT_FIND_COMMAND='Could not find "%s", try installing it by running "%s".'
 
+MESSAGE_INSTALL_DEPENDENCY='Do you want to try and install this now? (y/N)? '
+
 # System Constants
 SYSTEM_NAME_LINUX='Linux'
 SYSTEM_NAME_MAC_OS='Darwin'
@@ -14,6 +16,7 @@ ALL_SYSTEM_SUPPORTED="${SYSTEM_NAME_LINUX} ${SYSTEM_NAME_MAC_OS} ${SYSTEM_NAME_F
 # Prerequisite constants.
 PREREQUISITE_CONSTANT_PREFIX='ALL_PREREQUISITE_'
 ALL_PREREQUISITE_GLOBAL='git php composer qrencode jq'
+ALL_PREREQUISITE_COMPOSER=$(curl -s https://raw.githubusercontent.com/bunq/sdk_php/master/composer.json | fgrep ext | tr -d "\"*\:,\ ")
 ALL_PREREQUISITE_LINUX=''
 ALL_PREREQUISITE_DARWIN='brew'
 ALL_PREREQUISITE_FREEBSD=''
@@ -67,14 +70,15 @@ function assertAllPrerequisitePresent
 
 function assertComposerPrerequisitePresent
 {
-    phpModules=$(php -m | head)
+    phpModules=$(php -m)
 
-    if [[ ${phpModules} != *"curl"* ]]; then
-        determineInstructionInstallation "php-curl" "$(determineSystemName)" "php-curl"
-    fi
-    if [[ ${phpModules} != *"mbstring"* ]]; then
-        determineInstructionInstallation "php-mbstring" "$(determineSystemName)" "php-mbstring"
-    fi
+    for composerPrerequisite in ${ALL_PREREQUISITE_COMPOSER}; do
+        composerPrerequisite=${composerPrerequisite:4}
+
+        if [[ ${phpModules} != *"${composerPrerequisite}"* ]]; then
+            determineInstructionInstallation "php-${composerPrerequisite}" "$(determineSystemName)" "php-${composerPrerequisite}"
+        fi
+    done
 }
 
 function determineAllPrerequisiteMissing
@@ -149,7 +153,7 @@ function determineInstructionInstallation
     warningMessage=$(printf "${ERROR_COULD_NOT_FIND_COMMAND}" "${programName}" "${!commandInstallationConstantName} ${programPackageName}")
 
     echo ${warningMessage} >$(tty)
-    echo "Do you want to try and install this now? (y/N)? " >$(tty)
+    echo ${MESSAGE_INSTALL_DEPENDENCY} >$(tty)
 
     read answer
     if [ "$answer" != "${answer#[Yy]}" ] ;then
