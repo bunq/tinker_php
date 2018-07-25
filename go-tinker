@@ -54,6 +54,9 @@ USAGE="\
  └───────────────────────┴─────────────────────────────────┘
 
   Check out the Source files and tinker with them!
+  !**Run any command to generate sandbox API key**!
+
+tinker/make-request.php
 
   ${ANSI_FORMAT_DIM}Want to use PRODUCTION? Run: ./go-pro${ANSI_FORMAT_CLEAR}
 "
