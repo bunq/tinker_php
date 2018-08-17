@@ -69,9 +69,9 @@ class BunqLib
     /**
      * Spending money request constants.
      */
-    const REQUEST_SPENDING_MONEY_DESCRIPTION = "Requesting some spending money.";
-    const REQUEST_SPENDING_MONEY_RECIPIENT = "sugardaddy@bunq.com";
-    const REQUEST_SPENDING_MONEY_AMOUNT = "500.0";
+    const REQUEST_SPENDING_MONEY_DESCRIPTION = 'Requesting some spending money.';
+    const REQUEST_SPENDING_MONEY_RECIPIENT = 'sugardaddy@bunq.com';
+    const REQUEST_SPENDING_MONEY_AMOUNT = '500.0';
     const REQUEST_SPENDING_MONEY_WAIT_TIME_SECONDS = 1;
 
     /**
@@ -110,16 +110,16 @@ class BunqLib
      */
     private function setupContext(bool $resetConfigIfNeeded = true)
     {
-        if (is_file($this->determineBunqConfFileName())) {
+        if (is_file($this->determineBunqConfFileNameString())) {
             // Config is already present
         } elseif (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)) {
-            InstallationUtil::automaticInstall($this->environment, $this->determineBunqConfFileName());
+            InstallationUtil::automaticInstall($this->environment, $this->determineBunqConfFileNameString());
         }
 
         try {
-            $apiContext = ApiContext::restore($this->determineBunqConfFileName());
+            $apiContext = ApiContext::restore($this->determineBunqConfFileNameString());
             $apiContext->ensureSessionActive();
-            $apiContext->save($this->determineBunqConfFileName());
+            $apiContext->save($this->determineBunqConfFileNameString());
             BunqContext::loadApiContext($apiContext);
         } catch (ForbiddenException $forbiddenException) {
             if ($resetConfigIfNeeded) {
@@ -133,7 +133,7 @@ class BunqLib
     /**
      * @return string
      */
-    private function determineBunqConfFileName(): string
+    private function determineBunqConfFileNameString(): string
     {
         if ($this->environment->equals(BunqEnumApiEnvironmentType::PRODUCTION())) {
             return self::CONFIG_FILE_NAME_PRODUCTION;
@@ -166,7 +166,7 @@ class BunqLib
     private function handleForbiddenException(ForbiddenException $forbiddenException)
     {
         if (BunqEnumApiEnvironmentType::SANDBOX()->equals($this->environment)) {
-            unlink($this->determineBunqConfFileName());
+            unlink($this->determineBunqConfFileNameString());
             $this->setupContext(false);
         } else {
             throw $forbiddenException;
@@ -223,7 +223,7 @@ class BunqLib
      */
     public function updateContext()
     {
-        BunqContext::getApiContext()->save($this->determineBunqConfFileName());
+        BunqContext::getApiContext()->save($this->determineBunqConfFileNameString());
     }
 
     /**
