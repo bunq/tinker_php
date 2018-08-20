@@ -404,7 +404,13 @@ class BunqLib
             null, /* limit */
             null, /* magStripePermission */
             null, /* countryPermission */
-            [new CardPinAssignment('PRIMARY', null, $monetaryAccount->getId())]
+            [
+                new CardPinAssignment(
+                    'PRIMARY',
+                    null, /* pinCode */
+                    $monetaryAccount->getId()
+                )
+            ]
         );
     }
 
