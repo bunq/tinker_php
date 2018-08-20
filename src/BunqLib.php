@@ -14,6 +14,7 @@ use bunq\Model\Generated\Endpoint\UserCompany;
 use bunq\Model\Generated\Endpoint\UserLight;
 use bunq\Model\Generated\Endpoint\UserPerson;
 use bunq\Model\Generated\Object\Amount;
+use bunq\Model\Generated\Object\CardPinAssignment;
 use bunq\Model\Generated\Object\LabelMonetaryAccount;
 use bunq\Model\Generated\Object\NotificationFilter;
 use bunq\Model\Generated\Object\Pointer;
@@ -402,8 +403,8 @@ class BunqLib
             null, /* status */
             null, /* limit */
             null, /* magStripePermission */
-            null, /* countryPermission */
-            $monetaryAccount->getId()
+            null,
+            [new CardPinAssignment('PRIMARY', null, $monetaryAccount->getId())]
         );
     }
 
