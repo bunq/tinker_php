@@ -104,7 +104,7 @@ class SharedLib
     const INDENTATION_SMALL = '  ';
     const INDENTATION_EXTRA_SMALL = ' ';
     const MESSAGE_CARD_NOT_LINKED = 'Not linked yet.';
-    const FORMAT_LINKED_ACCOUNT = "%s (%s)";
+    const FORMAT_LINKED_ACCOUNT = '%s (%s)';
 
     /**
      * @var BunqEnumApiEnvironmentType
@@ -115,7 +115,6 @@ class SharedLib
      * @param string[] $allOption
      *
      * @return BunqEnumApiEnvironmentType
-     * @throws BunqException
      */
     public static function determineEnvironmentType(array $allOption): BunqEnumApiEnvironmentType
     {
