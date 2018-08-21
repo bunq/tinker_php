@@ -406,7 +406,7 @@ class BunqLib
             null, /* countryPermission */
             [
                 new CardPinAssignment(
-                    'PRIMARY',
+                    self::CARD_PIN_ASSIGNMENT_PRIMARY,
                     null, /* pinCode */
                     $monetaryAccount->getId()
                 )
