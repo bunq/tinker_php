@@ -1,3 +1,4 @@
 .idea
 vendor
-bunq-sandbox.conf
+*.conf
+_user_scripts

@@ -16,11 +16,13 @@ $bunq = new BunqLib($environment);
 $amount = SharedLib::getAmountFromAllOptionOrStdIn($allOption);
 $description = SharedLib::getDescriptionFromAllOptionOrStdIn($allOption);
 $recipient = SharedLib::getRecipientFromAllOptionOrStdIn($allOption);
+$name = SharedLib::getRecipientNameFromAllOptionOrStdIn($allOption);
 
 echo <<<EOL
 
   | Sending:      € {$amount}
   | To:           {$recipient}
+  | Name:         {$name}
   | Description:  {$description}
    
     ...
@@ -28,7 +30,7 @@ echo <<<EOL
 EOL;
 
 $bankAccounts = $bunq->getAllActiveBankAccount();
-$bunq->makePayment($amount, $recipient, $description, $bankAccounts[0]);
+$bunq->makePayment($amount, $recipient, $description, $bankAccounts[0], $name);
 
 echo <<<EOL
 
