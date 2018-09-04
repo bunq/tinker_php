@@ -421,6 +421,8 @@ class BunqLib
      */
     public function addCallbackUrl(string $callbackUrl)
     {
+        $userId = $this->user->getId();
+        
         // Get the existing filters to not override the current filters.
         $allCurrentNotificationFilter = $this->user->getNotificationFilters();
         $allUpdatedNotificationFilter = [];
@@ -438,6 +440,7 @@ class BunqLib
         );
 
         UserPerson::update(
+            $userId,
             null, /* firstName */
             null, /* middleName */
             null, /* lastName */
