@@ -437,36 +437,65 @@ class BunqLib
             self::NOTIFICATION_CATEGORY_MUTATION
         );
 
-        UserPerson::update(
-            null, /* firstName */
-            null, /* middleName */
-            null, /* lastName */
-            null, /* publicNickName */
-            null, /* addressMain */
-            null, /* addressPostal */
-            null, /* avatarUuid */
-            null, /* taxResident */
-            null, /* documentType */
-            null, /* documentNumber */
-            null, /* documentCountryOfIssuance */
-            null, /* documentFrontAttachmentId */
-            null, /* documentBackAttachmentId */
-            null, /* dataOfBirth */
-            null, /* placeOfBirth */
-            null, /* countryOfBirth */
-            null, /* nationality */
-            null, /* language */
-            null, /* region */
-            null, /* gender */
-            null, /* status */
-            null, /* subStatus */
-            null, /* legalGuardianAlias */
-            null, /* sessionTimeout */
-            null, /* CardIds */
-            null, /* cardLimits */
-            null, /* dailyLimitWithoutConfirmationLogin */
-            $allUpdatedNotificationFilter
-        );
+        $userContext = BunqContext::getUserContext();
+        try {
+            $user = $userContext->getUserPerson();
+        } catch (\TypeError $e) {
+            $user = $userContext->getUserCompany();
+        }
+
+        if ($user instanceof UserPerson) {
+            UserPerson::update(
+                $user->getId(), /* UserPerson ID */
+                null, /* firstName */
+                null, /* middleName */
+                null, /* lastName */
+                null, /* publicNickName */
+                null, /* addressMain */
+                null, /* addressPostal */
+                null, /* avatarUuid */
+                null, /* taxResident */
+                null, /* documentType */
+                null, /* documentNumber */
+                null, /* documentCountryOfIssuance */
+                null, /* documentFrontAttachmentId */
+                null, /* documentBackAttachmentId */
+                null, /* dataOfBirth */
+                null, /* placeOfBirth */
+                null, /* countryOfBirth */
+                null, /* nationality */
+                null, /* language */
+                null, /* region */
+                null, /* gender */
+                null, /* status */
+                null, /* subStatus */
+                null, /* legalGuardianAlias */
+                null, /* sessionTimeout */
+                null, /* CardIds */
+                null, /* cardLimits */
+                null, /* dailyLimitWithoutConfirmationLogin */
+                $allUpdatedNotificationFilter
+            );
+        } elseif ($user instanceof UserCompany) {
+            UserCompany::update(
+                $user->getId(), /* UserCompany ID */
+                null, /* name */
+                null, /* publicNickName */
+                null, /* avatarUuid */
+                null, /* addressMain */
+                null, /* addressPostal */
+                null, /* language */
+                null, /* region */
+                null, /* country */
+                null, /* ubo */
+                null, /* chamberOfCommerceNumber */
+                null, /* status */
+                null, /* subStatus */
+                null, /* sessionTimeout */
+                null, /* dailyLimitWithoutConfirmationLogin */
+                $allUpdatedNotificationFilter
+            );
+        }
     }
 
     /**
