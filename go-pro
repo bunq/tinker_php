@@ -19,62 +19,62 @@ ${ANSI_FORMAT_CLEAR}"
 
 # Usage constant.
 USAGE="\
- ┌───────────────────────┬──────────────────────────────────────────────┐
- │                       │ Run                                          │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔐   Create PSD2 Provider!     │ ${ANSI_FORMAT_VERBOSE}tinker/create-psd2-configuration.php --production${ANSI_FORMAT_CLEAR}        │
- │                       │                                                 │
- │                       │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--certificate [path]${ANSI_FORMAT_CLEAR}                            │
- │                       │  ${ANSI_FORMAT_DIM}--chain [path]${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--key [path]${ANSI_FORMAT_CLEAR}                         │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔒   Create PSD2 OAuth Client     │ ${ANSI_FORMAT_VERBOSE}tinker/create-oauth-client.php --production${ANSI_FORMAT_CLEAR}        │
- │                       │                                                 │
- │                       │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--context [path]${ANSI_FORMAT_CLEAR}                                │
- │                       │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                            │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔓   Test PSD2 OAuth     │ ${ANSI_FORMAT_VERBOSE}tinker/test-oauth.php --production${ANSI_FORMAT_CLEAR}        │
- │                       │                                                 │
- │                       │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--code [authcode]${ANSI_FORMAT_CLEAR}                            │
- │                       │  ${ANSI_FORMAT_DIM}--configuration [path]${ANSI_FORMAT_CLEAR}                            │
- │                       │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                            │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ ✅   Show Overview     │ ${ANSI_FORMAT_VERBOSE}tinker/user-overview.php --production${ANSI_FORMAT_CLEAR}        │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔼   Make a payment    │ ${ANSI_FORMAT_VERBOSE}tinker/make-payment.php --production${ANSI_FORMAT_CLEAR}         │
- │                       │                                              │
- │                       │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                      │
- │                       │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                             │
- │                       │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                      │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔽   Make a request    │ ${ANSI_FORMAT_VERBOSE}tinker/make-request.php --production${ANSI_FORMAT_CLEAR}         │
- │                       │                                              │
- │                       │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                      │
- │                       │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                             │
- │                       │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                         │
- │                       │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                      │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 🔗   Link Card         │ ${ANSI_FORMAT_VERBOSE}tinker/link-card.php --production${ANSI_FORMAT_CLEAR}            │
- │                       │                                              │
- │                       │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                      │
- │                       │  ${ANSI_FORMAT_DIM}--card-id [id]${ANSI_FORMAT_CLEAR}                              │
- │                       │  ${ANSI_FORMAT_DIM}--account-id [id]${ANSI_FORMAT_CLEAR}                           │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ ✏️   Update Account    │ ${ANSI_FORMAT_VERBOSE}tinker/update-account.php --production${ANSI_FORMAT_CLEAR}       │
- │                       │                                              │
- │                       │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                      │
- │                       │  ${ANSI_FORMAT_DIM}--account-id [id]${ANSI_FORMAT_CLEAR}                           │
- │                       │  ${ANSI_FORMAT_DIM}--name [string]${ANSI_FORMAT_CLEAR}                             │
- ├───────────────────────┼──────────────────────────────────────────────┤
- │ 📫️   Add Callback Url  │ ${ANSI_FORMAT_VERBOSE}tinker/add-callback-url.php --production${ANSI_FORMAT_CLEAR}     │
- │                       │                                              │
- │                       │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                      │
- │                       │  ${ANSI_FORMAT_DIM}--url [url]${ANSI_FORMAT_CLEAR}                                 │
- └───────────────────────┴──────────────────────────────────────────────┘
+ ┌───────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────┐
+ │                               │ Run                                                                                                │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔐   Create PSD2 Provider!    │ ${ANSI_FORMAT_VERBOSE}tinker/create-psd2-configuration.php --production${ANSI_FORMAT_CLEAR}        │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
+ │                               │  ${ANSI_FORMAT_DIM}--certificate [path]${ANSI_FORMAT_CLEAR}                                        │
+ │                               │  ${ANSI_FORMAT_DIM}--chain [path]${ANSI_FORMAT_CLEAR}                                              │
+ │                               │  ${ANSI_FORMAT_DIM}--key [path]${ANSI_FORMAT_CLEAR}                                                │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔒   Create PSD2 OAuth Client │ ${ANSI_FORMAT_VERBOSE}tinker/create-oauth-client.php --production${ANSI_FORMAT_CLEAR}              │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
+ │                               │  ${ANSI_FORMAT_DIM}--context [path]${ANSI_FORMAT_CLEAR}                                            │
+ │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                            │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔓   Test PSD2 OAuth          │ ${ANSI_FORMAT_VERBOSE}tinker/test-oauth.php --production${ANSI_FORMAT_CLEAR}                       │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
+ │                               │  ${ANSI_FORMAT_DIM}--code [authcode]${ANSI_FORMAT_CLEAR}                                           │
+ │                               │  ${ANSI_FORMAT_DIM}--configuration [path]${ANSI_FORMAT_CLEAR}.                                     │
+ │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                            │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ ✅   Show Overview            │ ${ANSI_FORMAT_VERBOSE}tinker/user-overview.php --production${ANSI_FORMAT_CLEAR}                    │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔼   Make a payment           │ ${ANSI_FORMAT_VERBOSE}tinker/make-payment.php --production${ANSI_FORMAT_CLEAR}                     │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
+ │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                             │
+ │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                         │
+ │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                      │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔽   Make a request           │ ${ANSI_FORMAT_VERBOSE}tinker/make-request.php --production${ANSI_FORMAT_CLEAR}                     │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
+ │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                             │
+ │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                         │
+ │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                      │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 🔗   Link Card                │ ${ANSI_FORMAT_VERBOSE}tinker/link-card.php --production${ANSI_FORMAT_CLEAR}                        │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
+ │                               │  ${ANSI_FORMAT_DIM}--card-id [id]${ANSI_FORMAT_CLEAR}                                              │
+ │                               │  ${ANSI_FORMAT_DIM}--account-id [id]${ANSI_FORMAT_CLEAR}                                           │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ ✏️   Update Account            │ ${ANSI_FORMAT_VERBOSE}tinker/update-account.php --production${ANSI_FORMAT_CLEAR}                   │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
+ │                               │  ${ANSI_FORMAT_DIM}--account-id [id]${ANSI_FORMAT_CLEAR}                                           │
+ │                               │  ${ANSI_FORMAT_DIM}--name [string]${ANSI_FORMAT_CLEAR}                                             │
+ ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │ 📫️   Add Callback Url         │ ${ANSI_FORMAT_VERBOSE}tinker/add-callback-url.php --production${ANSI_FORMAT_CLEAR}                 │
+ │                               │                                                                                                    │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
+ │                               │  ${ANSI_FORMAT_DIM}--url [url]${ANSI_FORMAT_CLEAR}                                                 │
+ └───────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘
 "
 
 # Endpoint constants.
