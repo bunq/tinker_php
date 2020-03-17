@@ -29,7 +29,7 @@ const ALL_PSD2_CONFIGURATION_OPTION = [
 /**
  * File constants.
  */
-const FILE_PSD2_CONFIGURATION = __DIR__ . '/data/psd2.conf';
+const FILE_PSD2_CONFIGURATION = __DIR__ . '/../psd2.conf';
 
 $allOption = getopt('', ALL_PSD2_CONFIGURATION_OPTION);
 $environment = SharedLib::determineEnvironmentType($allOption);
