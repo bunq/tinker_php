@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": "^7.0.13",
-        "bunq/sdk_php": "^1.13.0"
+        "bunq/sdk_php": "^1.13.1"
     },
     "autoload": {
         "psr-4": {

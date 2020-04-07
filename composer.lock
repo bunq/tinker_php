@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "496c017c37add4c5931e5573cb0d478c",
+    "content-hash": "494cbb3eb5ef9a40dd736d7013ad18fa",
     "packages": [
         {
             "name": "bunq/sdk_php",
-            "version": "1.13.0",
+            "version": "1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bunq/sdk_php.git",
-                "reference": "7771fd0ab15402df1f06efba220847b7ee4ac861"
+                "reference": "d97d2a710038d183b711825864584e2d31e30e35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/7771fd0ab15402df1f06efba220847b7ee4ac861",
-                "reference": "7771fd0ab15402df1f06efba220847b7ee4ac861",
+                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/d97d2a710038d183b711825864584e2d31e30e35",
+                "reference": "d97d2a710038d183b711825864584e2d31e30e35",
                 "shasum": ""
             },
             "require": {
@@ -68,7 +68,7 @@
                 "payment",
                 "sepa"
             ],
-            "time": "2020-02-19T10:34:14+00:00"
+            "time": "2020-04-03T15:48:46+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
