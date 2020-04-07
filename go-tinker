@@ -35,6 +35,7 @@ USAGE="\
  │ 🔓   Test PSD2 OAuth          │ ${ANSI_FORMAT_VERBOSE}tinker/test-oauth.php${ANSI_FORMAT_CLEAR}                │
  │                               │                                      │
  │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                │
+ │                               │  ${ANSI_FORMAT_DIM}--context [path]${ANSI_FORMAT_CLEAR}                    │
  │                               │  ${ANSI_FORMAT_DIM}--code [authcode]${ANSI_FORMAT_CLEAR}                   │
  │                               │  ${ANSI_FORMAT_DIM}--configuration [path]${ANSI_FORMAT_CLEAR}              │
  │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                    │

@@ -15,7 +15,7 @@ use bunq\Util\FileUtil;
 /**
  * File constants.
  */
-const FILE_OAUTH_CONFIGURATION = 'tinker/data/oauth.conf';
+const FILE_OAUTH_CONFIGURATION = __DIR__ . '/../oauth.conf';
 
 /**
  * Option constants.
